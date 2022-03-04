@@ -17,11 +17,13 @@
       <style>
           #content th{
             border: 1px solid black;
-        border-collapse: collapse;      
+        border-collapse: collapse;
+        padding: 3px;      
           }
           #content td{
             border: 1px solid black;
         border-collapse: collapse;      
+        padding: 3px;      
           }
           #content {
             border: 1px solid black;
@@ -29,33 +31,33 @@
           }
       </style>
   </head>
-  <body>
-    <div class="receipt" style="height: 297px;width: 420px;padding:10px;background-color: white;">
+  <body style="height: 310pt;width: 420pt;padding:10px;background-color: white;">
+    <div class="receipt">
         <table style="width:100%;border:1px solid black">
             <tr>
-                <th style="text-align:center;font-size:16px;" colspan="4">S. S. Agrawal Homoeopathic Medial College & Hospital</th>
+                <th style="text-align:center;font-size:18px;" colspan="4">S. S. Agrawal Homoeopathic Medial College & Hospital</th>
             </tr>
             <tr>
-                <td style="text-align:center;font-size:10px" colspan="4">S. S. Agrawal College Campus Nr. Devina Park Society. Gandevi Road, Navsari-396445</td>
+                <td style="text-align:center;font-size:12px" colspan="4">S. S. Agrawal College Campus Nr. Devina Park Society. Gandevi Road, Navsari-396445</td>
             </tr>
             <tr>
-                <td style="text-align:center;font-size:10px" colspan="4">Comtact Number : 02637 - 0000000</td>
+                <td style="text-align:center;font-size:12px" colspan="4">Comtact Number : 02637 - 0000000</td>
             </tr>
             <tr>
-                <th style="text-align:center;font-size:10px" colspan="4">O P D Charges Recipt</th>
+                <th style="text-align:center;font-size:12px" colspan="4">O P D Charges Recipt</th>
             </tr>
-            <tr style="font-size: 12px;">
+            <tr style="font-size: 14px;">
                 <td colspan="3"></td>
                 <td style="text-align: right;">Date: 30/12/2021</td>
                 </tr>
-            <tr style="font-size: 12px;">
+            <tr style="font-size: 14px;">
                 <td><b>OPD/CASE NO : </b></td>
                 <td>123456789</td>
                 <td><b>Patient Name :</b></td>
                 <td>Oza Sanchit Hitendrabhai</td>
                 </tr>
             </table>
-            <table id="content" style="width: 100%;font-size: 12px;">
+            <table id="content" style="width: 100%;font-size: 14px;">
                 <tr>
                     <th style="width:10%">Sr No.</th>
                     <th  style="width:70%">Perticular</th>
@@ -92,23 +94,36 @@
                 </tr>
             </table>
     </div>
-  </body>
-  <script>
-        let box = document.querySelector('.receipt');
-        let width = box.offsetWidth;
-        let height = box.offsetHeight;
-        console.log(width,height);
-        var doc = new jsPDF("l", "pt", [width, height],true);
-        doc.setFont("courier");
-
-        doc.html(document.querySelector('.receipt'), {
-            callback: function (doc) {
-                var pageCount = doc.internal.getNumberOfPages();
-                doc.deletePage(pageCount)
-                doc.output("dataurlnewwindow");
-            },
-            x: 2,
-            y: 2,
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   
+	<script>
+       
+       $(document).ready(async function () {
+        let url= "http://localhost:9000/api"
+      let rec_id = window.location.search.split("=",2)[1];
+      console.log(rec_id);
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: `${url}/opd/getEntry/${rec_id}`,
+            success: async function (data) {
+                console.log(data); 
+            }, 
+            error: function (e) {
+              alert(`Unable to Create Request ${e}`);
+              console.log("Make Request Ajax ERROR: ", JSON.stringify(e));
+            }
+          });
         });
-   </script>
+		/*var pdf = new jsPDF('l', 'pt', 'a5');
+    	pdf.html(document.body, {
+			callback: function (pdf) {
+		        var pageCount = pdf.internal.getNumberOfPages();
+                pdf.deletePage(pageCount)
+                 pdf.output('dataurlnewwindow');
+			}
+		});*/
+	</script>
+  </body>
+  
 </html>

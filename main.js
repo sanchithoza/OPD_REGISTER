@@ -16,7 +16,7 @@ fastify.register(require('fastify-formbody'))
   })
     //database connection
     //routes
-fastify.register(require('./routes/opd'), { prefix: '/maintenance/opd' });  
+fastify.register(require('./routes/opd'), { prefix: '/api/opd' });  
 
 // Declare a route
 //Funtion To run the server

@@ -36,6 +36,13 @@ async function routes(fastify, options) {
         }).catch((error)=>{
             reply.status(400).send(error)
         })
-    })  
+    }) 
+    fastify.get('/getEntry/:id',async (request,reply)=>{
+        knex("tbl_opd_register").select().where({id:request.params.id}).then((result)=>{
+            reply.status(200).send(result[0]);
+        }).catch((error)=>{
+            reply.status(400).send(error);
+        })
+    }) 
 }
 module.exports = routes

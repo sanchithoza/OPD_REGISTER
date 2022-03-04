@@ -1,4 +1,5 @@
-let url= "http://localhost:9000/maintenance"
+let url= "http://localhost:9000/api"
+//let url= "https://opd.sanchithoza.xyz/api"
 //==================================
 //==Ui Elements like modal and menu==>
 //==================================
