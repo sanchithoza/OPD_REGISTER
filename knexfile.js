@@ -10,9 +10,9 @@ module.exports = {
             user: 'root',
             password: '',
             //for sanchithoza.xyz web version
-          //  user:'aicsacin_root',
-           // password:'@Sanchit#2022',
-            database: 'aicsacin_opd_register'
+          //  user:'requests_root',
+           // password:'Ssaccm@2021',
+            database: 'requests_opd_register'
       }
   },
   /*production: {

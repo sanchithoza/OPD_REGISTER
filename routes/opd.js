@@ -1,10 +1,6 @@
-const boom = require('boom');
-const { result } = require('lodash');
-const pdfGenerator = require('pdfkit')
 const knex = require('../knex');
 async function routes(fastify, options) {
     fastify.post('/newEntry',async(request,reply)=>{
-        console.log(request.body);
         knex("tbl_opd_register").insert(request.body).then((result)=>{
             reply.status(200).send(result)
         }).catch((error)=>{
@@ -12,7 +8,6 @@ async function routes(fastify, options) {
         })
     })  
     fastify.post('/getEntries',async(request,reply)=>{
-        console.log(request.body);
         let filter= {};
         let query = `SELECT patient_name,DATE_FORMAT(created_at, '%Y-%m-%d') as created,DATE_FORMAT(transaction_date, '%Y-%m-%d') as transaction_date,entry_by,`
         if(request.body.report_type =="lab"){
@@ -29,9 +24,7 @@ async function routes(fastify, options) {
         if(request.body.department!="all"){
             query += ` and department = '${request.body.department}'`;
         }
-        console.log(query);
         await knex.raw(query).then((result)=>{
-            console.log(result[0]);
             reply.status(200).send(result[0])
         }).catch((error)=>{
             reply.status(400).send(error)
