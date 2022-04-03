@@ -33,7 +33,7 @@
   </head>
   <body style="height: 310pt;width: 420pt;padding:10px;background-color: white;">
     <div class="receipt">
-        <table style="width:100%;border:1px solid black">
+        <table id="content" style="width:100%;border:1px solid black">
             <tr>
                 <th style="text-align:center;font-size:18px;" colspan="4">S. S. Agrawal Homoeopathic Medial College & Hospital</th>
             </tr>
@@ -47,17 +47,16 @@
                 <th style="text-align:center;font-size:12px" colspan="4">O P D Charges Recipt</th>
             </tr>
             <tr style="font-size: 14px;">
-                <td colspan="3"></td>
-                <td style="text-align: right;">Date: 30/12/2021</td>
+              <td colspan="2"><b>OPD/CASE NO : </b>
+                <span id="caseNumber">123456789</span></td>
+                <td style="text-align: right;">Date: <span id="reciptDate"></span></td>
                 </tr>
             <tr style="font-size: 14px;">
-                <td><b>OPD/CASE NO : </b></td>
-                <td>123456789</td>
-                <td><b>Patient Name :</b></td>
-                <td>Oza Sanchit Hitendrabhai</td>
+               
+                <td colspan="3"><b>Patient Name :</b>
+                <span id="patientName">Oza Sanchit Hitendrabhai</span></td>
                 </tr>
-            </table>
-            <table id="content" style="width: 100%;font-size: 14px;">
+            
                 <tr>
                     <th style="width:10%">Sr No.</th>
                     <th  style="width:70%">Perticular</th>
@@ -66,27 +65,27 @@
                 <tr>
                     <td>1.</td>
                     <td>Registration Charges</td>
-                    <td>0</td>
+                    <td id="registrationCharge">0</td>
                 </tr>
                 <tr>
                     <td>2.</td>
                     <td>Lab Charges</td>
-                    <td>0</td>
+                    <td id="labCharge">0</td>
                 </tr>
                 <tr>
                     <td>3.</td>
                     <td>Medicien Charges</td>
-                    <td>0</td>
+                    <td id="medicienCharges">0</td>
                 </tr>
                 <tr>
                     <td>4.</td>
                     <td>Dressing/Injection/ECG Charges</td>
-                    <td>0</td>
+                    <td id="otherCharge">0</td>
                 </tr>
                 <tr>
                     <th></th>
                     <th>Total Amount</td>
-                    <th>0</th>
+                    <th id="totalCharge">0</th>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
@@ -95,7 +94,8 @@
             </table>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-   
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 	<script>
        
        $(document).ready(async function () {
@@ -108,7 +108,29 @@
             contentType: "application/json",
             url: `${url}/opd/getEntry/${rec_id}`,
             success: async function (data) {
-                console.log(data); 
+                console.log(data);
+                $("#caseNumber").text(data.case_number);
+                $("#patientName").text(data.patient_name); 
+                $("#registrationCharge").text(parseInt(data.registration)+parseInt(data.consultation)); 
+                $("#labCharge").text(data.lab); 
+                $("#medicienCharges").text(parseInt(data.bio_chemic) + parseInt(data.dispensary) + parseInt(data.mother_tincher))
+                $("#otherCharge").text(parseInt(data.first_stiches) + parseInt(data.ecg) + parseInt(data.injection) + parseInt(data.major_dressing) + parseInt(data.minor_dressing) + parseInt(data.other_stiches)); 
+                $("#totalCharge").text(data.total);  
+                let rawDate = new Date(data.transaction_date);
+                let dateString = rawDate.getDate() +"/"+ (rawDate.getMonth()+1) +"/"+rawDate.getFullYear();
+                $("#reciptDate").text(dateString);
+                html2canvas($('#content')[0], {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Table.pdf");
+                }
+            });
             }, 
             error: function (e) {
               alert(`Unable to Create Request ${e}`);
@@ -116,6 +138,7 @@
             }
           });
         });
+        
 		/*var pdf = new jsPDF('l', 'pt', 'a5');
     	pdf.html(document.body, {
 			callback: function (pdf) {
