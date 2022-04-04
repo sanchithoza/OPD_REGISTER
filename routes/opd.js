@@ -9,7 +9,7 @@ async function routes(fastify, options) {
     })  
     fastify.post('/getEntries',async(request,reply)=>{
         let filter= {};
-        let query = `SELECT patient_name,DATE_FORMAT(created_at, '%Y-%m-%d') as created,DATE_FORMAT(transaction_date, '%Y-%m-%d') as transaction_date,entry_by,`
+        let query = `SELECT id,patient_name,DATE_FORMAT(created_at, '%Y-%m-%d') as created,DATE_FORMAT(transaction_date, '%Y-%m-%d') as transaction_date,entry_by,`
         if(request.body.report_type =="lab"){
             query += `lab as amount`
         }else if(request.body.report_type =="registration"){
