@@ -30,29 +30,51 @@
             border: 1px solid black;
         border-collapse: collapse;      
           }
+          #loading {
+  position: fixed;
+  display: block;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  text-align: center;
+  opacity: 0.7;
+  background-color: #fff;
+  z-index: 99;
+}
+
+#loading-image {
+  position: absolute;
+  top: 100px;
+  left: 240px;
+  z-index: 100;
+}
       </style>
   </head>
-  <body style="background-color: white;font-size:20pt">
+  <body style="background-color: white;font-size:30pt">
+    <div id="loading">
+      <img id="loading-image" src="path/to/ajax-loader.gif" alt="Loading..." />
+    </div>
     <div class="receipt">
         <table id="content" style="width:100%;border:1px solid black">
             <tr>
                 <th style="text-align:center;" colspan="4">S. S. Agrawal Homoeopathic Medial College & Hospital</th>
             </tr>
             <tr>
-                <td style="text-align:center;" colspan="4">S. S. Agrawal College Campus Nr. Devina Park Society. Gandevi Road, Navsari-396445</td>
+                <td style="text-align:center;" colspan="4">S. S. Agrawal College Campus, Nr. Devina Park Society,<br> Gandevi Road, Navsari-396445</td>
             </tr>
             <tr>
-                <td style="text-align:center;" colspan="4">Comtact Number : 02637 - 0000000</td>
+                <td style="text-align:center;" colspan="4">Contact Number : 02637 - 0000000</td>
             </tr>
             <tr>
                 <th style="text-align:center;" colspan="4">O P D Charges Recipt</th>
             </tr>
-            <tr style="">
-              <td colspan="2"><b>OPD/CASE NO : </b>
+            <tr>
+                <td colspan="2"><b>OPD/CASE NO : </b>
                 <span id="caseNumber">123456789</span></td>
-                <td style="text-align: right;">Date: <span id="reciptDate"></span></td>
+                <td style="text-align: right;">Dt: <span id="reciptDate"></span></td>
                 </tr>
-            <tr style="">
+            <tr>
                
                 <td colspan="3"><b>Patient Name :</b>
                 <span id="patientName">Oza Sanchit Hitendrabhai</span></td>
@@ -64,33 +86,33 @@
                     <th style="width:20%">Amount</th>
                 </tr>
                 <tr>
-                    <td>1.</td>
+                    <td style="text-align: center;">1.</td>
                     <td>Registration Charges</td>
-                    <td id="registrationCharge">0</td>
+                    <td id="registrationCharge" style="text-align: center;">0</td>
                 </tr>
                 <tr>
-                    <td>2.</td>
+                    <td style="text-align: center;">2.</td>
                     <td>Lab Charges</td>
-                    <td id="labCharge">0</td>
+                    <td id="labCharge" style="text-align: center;">0</td>
                 </tr>
                 <tr>
-                    <td>3.</td>
+                    <td style="text-align: center;">3.</td>
                     <td>Medicien Charges</td>
-                    <td id="medicienCharges">0</td>
+                    <td id="medicienCharges" style="text-align: center;">0</td>
                 </tr>
                 <tr>
-                    <td>4.</td>
+                    <td style="text-align: center;">4.</td>
                     <td>Dressing/Injection/ECG Charges</td>
-                    <td id="otherCharge">0</td>
+                    <td id="otherCharge" style="text-align: center;">0</td>
                 </tr>
                 <tr>
                     <th></th>
                     <th>Total Amount</td>
-                    <th id="totalCharge">0</th>
+                    <th id="totalCharge" style="text-align: center;">0</th>
                 </tr>
                 <tr>
                     <td colspan="2"></td>
-                    <td><div style="height:30px;width:30px;margin:5px 5px 0px 5px;padding:3px;border:1px solid black"></div><br>Auth. Sign.</td>
+                    <td><div style="height:100px;width:100px;margin:5px 5px 0px 5px;padding:3px;border:1px solid black"></div>Auth. Sign.</td>
                 </tr>
             </table>
     </div>
@@ -117,6 +139,7 @@
                 $("#medicienCharges").text(parseInt(data.bio_chemic) + parseInt(data.dispensary) + parseInt(data.mother_tincher))
                 $("#otherCharge").text(parseInt(data.first_stiches) + parseInt(data.ecg) + parseInt(data.injection) + parseInt(data.major_dressing) + parseInt(data.minor_dressing) + parseInt(data.other_stiches)); 
                 $("#totalCharge").text(data.total);  
+                
                 let rawDate = new Date(data.transaction_date);
                 let dateString = rawDate.getDate() +"/"+ (rawDate.getMonth()+1) +"/"+rawDate.getFullYear();
                 $("#reciptDate").text(dateString);
@@ -126,11 +149,19 @@
                     var data = canvas.toDataURL();
                     pdf = new jsPDF("l", "pt", [595,421]); 
                     const imgProps= pdf.getImageProperties(data);
-        const pdfWidth = 565;
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-        console.log(pdfWidth,pdfHeight);
+                  const pdfWidth = 565;
+                  const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+                  console.log(pdfWidth,pdfHeight);
                   pdf.addImage(data, 'JPEG', 15, 15,pdfWidth,pdfHeight)
-                  pdf.save('file.pdf')
+                  pdf.autoPrint({variant: 'conform'});
+                  pdf.save('file.pdf');
+                  function closeWin() { 
+                      window.top.close();
+                  }
+                  setTimeout(function(){ 
+                      closeWin()
+                      $('#loading').hide();
+                  }, 500);
                  /*   var docDefinition = {
                         content: [{
                             image: data,

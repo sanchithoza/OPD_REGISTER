@@ -22,20 +22,20 @@
   </head>
 
   <body>
-    <nav id="navBar" class="navbar navbar-expand-md bg-dark navbar-dark">
+    <nav id="navBar" class="navbar navbar-expand-md bg-dark navbar-dark navbar-fixed-top p-1">
       <!-- Nav-Bar Comes From header.js-->
     </nav>
     <div class="container">
       <div class="row">
         <div class="col-md-12">
           <div class="card overflow-auto">
-            <div class="card-header">
-              <h4 id="">New OPD Charges Entry</h4>
-            </div>
-            <div class="card-body">
+            
+            <div class="card-body m-1">
               <form class="form">
                 <div class="row">
-                  <div class="col-md-4 border-right border-dark p-2">
+                  <div class="col-md-4 p-2 card">
+                    <h3 id="">NEW OPD CHARGES ENTRY</h3 >
+                    
                     <div class="form-group">
                       <label for="institute">Select Department</label>
                       <select
@@ -73,7 +73,7 @@
                       />
                     </div>
                   </div>
-                  <div class="col-md-4 border-right border-dark p-0">
+                  <div class="col-md-4 p-0 card">
                     <table class="table p-0 m-0">
                       <h3>Dispensary Charge</h3>
                       <tr>
@@ -196,7 +196,7 @@
                       </tr>
                     </table>
                   </div>
-                  <div class="col-md-4 p-0">
+                  <div class="col-md-4 p-0 card">
                     <table class="table p-0 m-0">
                       <h3>Dressing Charge</h3>
                       <tr>
@@ -294,13 +294,13 @@
                             name="remark"
                             id="remark"
                             cols="30"
-                            rows="4"
+                            rows="3"
                           ></textarea>
                         </td>
                       </tr>
                     </table>
                   </div>
-                  <div class="col-md-12 border-top border-dark p-2 center">
+                  <div class="col-md-12 p-0 m-0 center card">
                     <table class="table">
                       <tr>
                         <td>Entry By</td>
@@ -497,7 +497,7 @@
           $("input[type=number]").each(function () {
             newEntry[this.id] = this.value;
           });
-          if(newEntry.department == "none" || newEntry.case_number == "" || newEntry.total == ""){
+          if(newEntry.department == "none" || newEntry.case_number == "" || newEntry.total == "" ||newEntry.patient_name == ""){
             alert("Provide Sufficiant Details to Submit.");
             return false;
           }
@@ -511,7 +511,9 @@
             success: async function (data) {
               alert("Request Created successfully.");
               //console.log(data);
-              window.location.replace(`./demo.html?id=${data[0]}`)
+              //window.location.replace();
+              window.open(`./recipt.html?id=${data[0]}`, '_blank');
+              window.location.reload();
             },
             error: function (e) {
               alert(`Unable to Create Request.`);
