@@ -1,5 +1,5 @@
 {
-  "name": "maintenance_register",
+  "name": "opd_register",
   "version": "1.0.0",
   "description": "For Agrawal Education Foundation",
   "main": "app.js",
@@ -10,10 +10,12 @@
     "migrate": "knex migrate:latest"
   },
   "engines": {
-    "node": "16.13.0"
+    "node": "16.13.2"
   },
   "author": "Sanchit Oza",
   "dependencies": {
+    "@fastify/formbody": "^6.0.0",
+    "@fastify/multipart": "^6.0.0",
     "fastify": "^3.17.0",
     "fastify-cors": "^5.1.0",
     "knex": "^0.95.15",

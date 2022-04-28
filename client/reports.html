@@ -18,6 +18,13 @@
       type="text/css"
       href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css"
     />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/css-loader/3.3.3/css-loader.css"
+    integrity="sha512-HrLBWHEIRcc9ZemiLhR34DVdkr81NVqhOtT1fIZGdcY5UmC5JzJAEwuj9B/fcNA6huJ3NQ8KV67CmdM/3H2H3g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
     <style>
         #loading {
           position: fixed;
@@ -41,9 +48,7 @@
   </head>
 
   <body>
-    <div id="loading">
-      <img id="loading-image" src="path/to/ajax-loader.gif" alt="Loading..." />
-    </div>
+    <div id="loader" class="loader loader-ball"></div>
     <nav id="navBar" class="navbar navbar-expand-md bg-dark navbar-dark">
       <!-- Nav-Bar Comes From header.js-->
     </nav>
@@ -83,6 +88,7 @@
                         <option value="registration">
                           Consultation / Registratoion
                         </option>
+                        <option value="medicine">Medicine</option>
                         <option value="other">Other</option>
                       </select>
                     </div>
@@ -186,20 +192,7 @@
         $("#to_date").val(today);
         $('#loading').hide();
         $("#generate_report").click(async function () {
-          /* var table = $("#opd_entries").DataTable({
-                      ajax: data,
-                      paging: false,
-                      retrieve: true,
-                      dom: "Bfrtip",
-                      buttons: [
-                        { extend: "excelHtml5",
-                          footer: true,
-                          title:`A Report of ${$("#department").val()} department(s)`,
-                          messageTop: `Duration : ${$('#from_date').val()} To ${$('#to_date').val()} of ${$("#report_type").val()} Charges`, },
-
-                        { extend: "pdfHtml5", footer: true },
-                      ],
-                    });*/
+          $("#loader").addClass("is-active");
           $("#report_div").removeAttr("hidden");
           let finalTotal = 0;
           let department = $("#department").val() || "";
@@ -229,22 +222,6 @@
                   },
                 ];
               }
-              /*var length = data.length;
-                    table.clear();
-                    for (var i = 0; i < length; i++) {
-                      $("#opd_entries")
-                        .dataTable()
-                        .fnAddData([
-                          data[i].transaction_date,
-                          data[i].patient_name,
-                          data[i].amount,
-                          data[i].entry_by,
-                        ]);
-                      finalTotal += parseInt(data[i].total);
-                    }
-      */
-              console.log(JSON.stringify(data));
-
               var table = $("#opd_entries").DataTable({
                 data: data,
                 columns: [
@@ -285,6 +262,7 @@
                   return parseInt(a) + parseInt(b);
                 })
               );
+              $("#loader").removeClass("is-active");
             },
             error: function (e) {
               alert(`Unable to Create Request ${e}`);

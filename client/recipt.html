@@ -12,7 +12,13 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-    
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/css-loader/3.3.3/css-loader.css"
+    integrity="sha512-HrLBWHEIRcc9ZemiLhR34DVdkr81NVqhOtT1fIZGdcY5UmC5JzJAEwuj9B/fcNA6huJ3NQ8KV67CmdM/3H2H3g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
     
       <style>
           
@@ -52,9 +58,7 @@
       </style>
   </head>
   <body style="background-color: white;font-size:30pt">
-    <div id="loading">
-      <img id="loading-image" src="path/to/ajax-loader.gif" alt="Loading..." />
-    </div>
+    <div id="loader" class="loader loader-ball"></div>
     <div class="receipt">
         <table id="content" style="width:100%;border:1px solid black">
             <tr>
@@ -122,8 +126,9 @@
 	<script>
        
        $(document).ready(async function () {
+        $("#loader").addClass("is-active");
         let url= "http://localhost:9000/api"
-//let url= "https://opd.request-ssa.xyz/api"
+//let url= "https://opd.sanchithoza.xyz/api"
       let rec_id = window.location.search.split("=",2)[1];
       console.log(rec_id);
         $.ajax({

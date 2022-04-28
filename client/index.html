@@ -13,6 +13,13 @@
       type="text/css"
       href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css"
     />
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/css-loader/3.3.3/css-loader.css"
+    integrity="sha512-HrLBWHEIRcc9ZemiLhR34DVdkr81NVqhOtT1fIZGdcY5UmC5JzJAEwuj9B/fcNA6huJ3NQ8KV67CmdM/3H2H3g=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
     <style>
       table tr td {
         margin: 0px !important;
@@ -22,6 +29,7 @@
   </head>
 
   <body>
+    <div id="loader" class="loader loader-ball"></div>
     <nav id="navBar" class="navbar navbar-expand-md bg-dark navbar-dark navbar-fixed-top p-1">
       <!-- Nav-Bar Comes From header.js-->
     </nav>
@@ -487,6 +495,7 @@
         });
 
         $("#submitRequest").click(() => {
+          $("#loader").addClass("is-active");
           newEntry.department = $("#department").val();
           newEntry.patient_name = $("#patient_name").val();
           newEntry.case_number = $("#case_number").val();
