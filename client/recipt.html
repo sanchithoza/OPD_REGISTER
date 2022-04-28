@@ -127,8 +127,8 @@
        
        $(document).ready(async function () {
         $("#loader").addClass("is-active");
-        let url= "http://localhost:9000/api"
-//let url= "https://opd.sanchithoza.xyz/api"
+        let url= `${location.protocol}//localhost:9000/api`
+//let url= `${location.protocol}//sanchithoza.xyz/api`
       let rec_id = window.location.search.split("=",2)[1];
       console.log(rec_id);
         $.ajax({

@@ -1,5 +1,5 @@
-let url= "http://localhost:9000/api"
-//let url= "https://opd.sanchithoza.xyz/api"
+let url= `${location.protocol}//localhost:9000/api`
+//let url= `${location.protocol}//sanchithoza.xyz/api`
 //==================================
 //==Ui Elements like modal and menu==>
 //==================================
